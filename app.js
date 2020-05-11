@@ -1,6 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const socket = require('socket.io')
+const socketio = require('socket.io')
 const mongoose = require('mongoose')
 const http = require('http')
 
@@ -14,7 +14,9 @@ mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);    
 
-mongoose.connect("mongodb://localhost/Private_chats");          //connecting mongodb database
+mongoose.connect("mongodb://localhost/Private_chats",()=>{
+    console.log("connected")                                    //connecting mongodb database
+});
 
 app.use(express.static("public"));
 app.set("view engine", "ejs");
@@ -25,7 +27,18 @@ app.get('/',(req,res)=>{
     res.render("home")
 })
 
+//Auth routes
+app.get('/signin',(req,res)=>{
+    res.render("signin")
+})
 
+app.get('/login',(req,res)=>{
+    res.render('login')
+})
+
+app.get('/addFriend',(req,res)=>{
+    res.render("add_friend")
+})
 
 
 //Server configuration 
