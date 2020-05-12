@@ -75,13 +75,19 @@ app.get('/login',(req,res)=>{
 })
 
 app.post('/login', passport.authenticate('local',{
-    successRedirect : "/",
+    successRedirect : "/addFriend",
     failureRedirect : "/login"
 }) ,(req,res)=>{
 })
 
 app.get('/addFriend',(req,res)=>{
-    res.render("add_friend")
+    User.find({},(err,res)=>{
+      if (err) {
+          console.log(err)
+      } else {
+        res.render("add_friend")
+      }  
+    })
 })
 
 
