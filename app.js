@@ -81,11 +81,11 @@ app.post('/login', passport.authenticate('local',{
 })
 
 app.get('/addFriend',(req,res)=>{
-    User.find({},(err,res)=>{
+    User.find({},(err,data)=>{
       if (err) {
           console.log(err)
       } else {
-        res.render("add_friend")
+        res.render("add_friend",{data : data})
       }  
     })
 })
