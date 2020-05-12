@@ -96,6 +96,9 @@ app.post('/make_friend',(req,res)=>{
             console.log(err)
         }else{
             // Want to add user retrived here (Data) into current Users Friends array
+            // We get Current User from req.user
+            // Here we will add update query to update Friends Array of Current User 
+            // and same for Friend's Friend Array
         }
     })
 })
