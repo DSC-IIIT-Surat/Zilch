@@ -90,6 +90,16 @@ app.get('/addFriend',(req,res)=>{
     })
 })
 
+app.post('/make_friend',(req,res)=>{
+    User.findOne({username : req.body.username},(err,data)=>{
+        if(err){
+            console.log(err)
+        }else{
+            // Want to add user retrived here (Data) into current Users Friends array
+        }
+    })
+})
+
 
 //Server configuration 
 PORT = process.env.PORT || 3000
