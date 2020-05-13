@@ -95,6 +95,33 @@ app.post('/make_friend',(req,res)=>{
         if(err){
             console.log(err)
         }else{
+            console.log("current user : "+req.user.username)
+            console.log("new user : "+data.username)
+            User.updateOne({username : req.user.username},{
+                $push:{
+                    friends:data.username
+                }
+            },(err,r)=>{
+                if(err){
+                    console.log(err)
+                }else{
+                    console.log(r)
+                }
+            })
+
+            User.updateOne({username : data.username},{
+                $push:{
+                    friends:req.user.username
+                }
+            },(err,r)=>{
+                if(err){
+                    console.log(err)
+                }else{
+                    console.log(r)
+                }
+            })
+
+            res.redirect('/')
             // Want to add user retrived here (Data) into current Users Friends array
             // We get Current User from req.user
             // Here we will add update query to update Friends Array of Current User 

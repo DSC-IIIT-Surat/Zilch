@@ -5,7 +5,8 @@ var mongoose               = require('mongoose'),
 
 var UserSchema = new mongoose.Schema({
     username: String,
-    password: String
+    password: String,
+    friends : []
 });
 UserSchema.plugin(passportLocalMongoose);
 
