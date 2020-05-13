@@ -7,7 +7,14 @@ const LocalStrategy = require('passport-local')
 const passportLocalMongoose = require('passport-local-mongoose')
 const http = require('http')
 
+
+//require models here
 const User = require('./models/user')
+
+
+//require routes here
+const authRoutes = require('./routes/Auth')
+const AddFriendsRoutes = require('./routes/add_Friends')
 
 
 const app = express()
@@ -50,86 +57,8 @@ app.get('/',(req,res)=>{
     res.render("home")
 })
 
-//Auth routes
-app.get('/signin',(req,res)=>{
-    res.render("signin")
-})
-
-app.post('/signin',(req,res)=>{
-
-    username = req.body.username
-    password = req.body.password
-    User.register(new User({username : username}),password,(err,user)=>{
-        if(err){
-            console.log(err)
-        }else{
-            console.log(user)
-        }
-    })
-
-    res.redirect('/')
-})
-
-app.get('/login',(req,res)=>{
-    res.render('login')
-})
-
-app.post('/login', passport.authenticate('local',{
-    successRedirect : "/addFriend",
-    failureRedirect : "/login"
-}) ,(req,res)=>{
-})
-
-app.get('/addFriend',(req,res)=>{
-    User.find({},(err,data)=>{
-      if (err) {
-          console.log(err)
-      } else {
-        res.render("add_friend",{data : data})
-      }  
-    })
-})
-
-app.post('/make_friend',(req,res)=>{
-    User.findOne({username : req.body.username},(err,data)=>{
-        if(err){
-            console.log(err)
-        }else{
-            console.log("current user : "+req.user.username)
-            console.log("new user : "+data.username)
-            User.updateOne({username : req.user.username},{
-                $push:{
-                    friends:data.username
-                }
-            },(err,r)=>{
-                if(err){
-                    console.log(err)
-                }else{
-                    console.log(r)
-                }
-            })
-
-            User.updateOne({username : data.username},{
-                $push:{
-                    friends:req.user.username
-                }
-            },(err,r)=>{
-                if(err){
-                    console.log(err)
-                }else{
-                    console.log(r)
-                }
-            })
-
-            res.redirect('/')
-            // Want to add user retrived here (Data) into current Users Friends array
-            // We get Current User from req.user
-            // Here we will add update query to update Friends Array of Current User 
-            // and same for Friend's Friend Array
-        }
-    })
-})
-
+app.use(authRoutes)
+app.use(AddFriendsRoutes)
 
 //Server configuration 
 PORT = process.env.PORT || 3000
