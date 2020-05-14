@@ -30,11 +30,9 @@
                     </div>
                 </form>
                 <ul class="list-group">
-                    <li class="list-group-item">First item</li>
-                    <li class="list-group-item">Second item</li>
-                    <li class="list-group-item">Third item</li>
-                    <li class="list-group-item">First item</li>
-                    <li class="list-group-item">Second item</li>
+                    <% friends.forEach(f => { %>
+                    <li class="list-group-item"><%- f %> </li>
+                    <% }) %>
                     <li class="list-group-item">Third item</li>
                 </ul>
             </div>
