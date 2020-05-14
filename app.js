@@ -61,7 +61,8 @@ app.use(authRoutes)
 app.use(AddFriendsRoutes)
 
 app.get('/my_friend',(req,res)=>{
-    res.render('list_friends')
+    console.log(req.user.friends)
+    res.render('list_friends',{friends:req.user.friends})
 })
 
 app.get('/chats',(req,res)=>{

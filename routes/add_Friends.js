@@ -1,7 +1,8 @@
-var express = require('express')
-var router = express.Router()
-var User = require('./../models/user')
-var passport = require('passport')
+const express = require('express')
+const router = express.Router()
+const User = require('./../models/user')
+const passport = require('passport')
+const cryptoRandomString = require('crypto-random-string');
 
 
 router.get('/addFriend',(req,res)=>{
@@ -22,10 +23,12 @@ router.post('/make_friend',(req,res)=>{
             console.log("current user : "+req.user.username)        //Just for debugging
             console.log("new user : "+data.username)                //Just for debugging
 
+            //Random string
+            const randomstring = cryptoRandomString({length: 10, type: 'url-safe'});
             //This one changes current user's Array
             User.updateOne({username : req.user.username},{
                 $push:{
-                    friends:data.username
+                    friends:{username : data.username,room : randomstring}
                 }
             },(err,r)=>{
                 if(err){
