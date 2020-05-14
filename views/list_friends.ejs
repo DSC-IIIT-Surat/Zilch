@@ -30,8 +30,8 @@
                     </div>
                 </form>
                 <ul class="list-group">
-                    <% friends.forEach(f => { %>
-                    <li class="list-group-item"><%- f %> </li>
+                    <% friends.forEach(friend=> { %>
+                    <li class="list-group-item"><%- friend.username %> </li>
                     <% }) %>
                 </ul>
             </div>

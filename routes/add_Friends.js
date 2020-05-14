@@ -23,7 +23,7 @@ router.post('/make_friend',(req,res)=>{
             console.log("current user : "+req.user.username)        //Just for debugging
             console.log("new user : "+data.username)                //Just for debugging
 
-            //Random string
+            //Random string for Room (used for sockets)
             const randomstring = cryptoRandomString({length: 10, type: 'url-safe'});
             //This one changes current user's Array
             User.updateOne({username : req.user.username},{
@@ -39,9 +39,10 @@ router.post('/make_friend',(req,res)=>{
             })
 
             //This one change Friend's friend array
+            //Same room to connect afterwards
             User.updateOne({username : data.username},{
                 $push:{
-                    friends:req.user.username
+                    friends:{username : req.user.username,room : randomstring}
                 }
             },(err,r)=>{
                 if(err){
