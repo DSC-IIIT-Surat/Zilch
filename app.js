@@ -60,6 +60,14 @@ app.get('/',(req,res)=>{
 app.use(authRoutes)
 app.use(AddFriendsRoutes)
 
+app.get('/my_friend',(req,res)=>{
+    res.render('list_friends')
+})
+
+app.get('/chats',(req,res)=>{
+    res.render('chat',{username : "AAA",room :"javascript"})            //right now hardcoded but will change in future
+})
+
 //Server configuration 
 PORT = process.env.PORT || 3000
 
