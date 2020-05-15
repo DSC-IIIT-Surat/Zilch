@@ -41,13 +41,119 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended:true}));
 
 
+//add in diffrent file//------------------------------------------------------------------//
+
+const users = []
+
+function userJoin(id, username ,room){
+    const user = {id , username , room}
+
+    users.push(user)
+    return user
+}
+
+//get current user
+function getUser(id){
+    return users.find(user => user.id === id)
+}
+
+function userLeave(id){
+    const index = users.findIndex(user => user.id === id)
+    if(index !== -1){
+        return users.splice(index,1)[0]
+    }
+}
+
+function getUserRoom(room){
+    return users.filter(user => user.room === room)
+}
+
+function formatMessage(username,text,time){           // get username , text and time from user and convert to object
+    return {
+        username,
+        text,
+        time,
+    }
+}
+
+//till here//----------------------------------------------------------------------------------//
+
+
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);    
 
-mongoose.connect("mongodb://localhost/Private_chats",()=>{
-    console.log("connected")                                    //connecting mongodb database
+mongoose.connect("mongodb://localhost/Private_chats",(err,db)=>{            //connecting mongodb database
+    if(err){
+        console.log(err)
+    }else{
+        console.log("Db connected")
+
+        io.on('connection',socket =>{
+
+            socket.on('join-chat',({username ,room})=>{
+
+                const user = userJoin(socket.id , username , room)
+
+                socket.join(user.room)
+
+                let chat = db.collection(room);
+
+                chat.find().limit(100).sort({_id:1}).toArray((err,res)=>{
+                    if(err){
+                        console.log(err)
+                    }
+                    socket.emit("output",res)
+                })
+        
+        
+                socket.emit('message',formatMessage(botName,'Wellcome to Zilch!'," "))
+        
+                //when user connects
+                socket.broadcast.to(user.room).emit('message',formatMessage(botName,`${user.username} has joined the chat`," "))
+                console.log(user.room)
+        
+                //sending chat message
+                socket.on('chatMessage',data=>{
+                    const user = getUser(socket.id)
+
+                    chat.insertOne({username: user.username, text: data.msg ,time : data.time}, function(){
+                        io.to(user.room).emit('message',formatMessage(user.username,data.msg,data.time))
+                    });
+
+                })
+        
+                io.to(user.room).emit('sendUserData',{
+                    room : user.room,
+                    users : getUserRoom(user.room)
+                })
+        
+                //when user disconnect
+                socket.on('disconnect',data=>{
+                    const user = userLeave(socket.id)
+        
+                    if(user){
+                        io.to(user.room).emit('message',formatMessage(botName,`${user.username} left the chat`," "))
+                        
+                        io.to(user.room).emit('sendUserData',{
+                            room : user.room,
+                            users : getUserRoom(user.room)
+                        })
+                    }
+        
+                    
+                })
+
+                socket.on('clear',()=>{
+                    chat.remove({},()=>{console.log("removed")})
+                })
+
+            })
+        
+        
+        })
+    }             
 });
 
 
