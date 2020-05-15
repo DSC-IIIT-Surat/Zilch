@@ -176,7 +176,7 @@ app.get('/my_friend',(req,res)=>{
 })
 
 app.post('/chats',(req,res)=>{
-    res.render('chat',{username : req.body.username,room :req.body.room})            //right now hardcoded but will change in future
+    res.render('chat',{username : req.user.username,room :req.body.room})            //right now hardcoded but will change in future
 })
 
 //Server configuration 
