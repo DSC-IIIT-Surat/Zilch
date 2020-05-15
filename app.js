@@ -84,6 +84,9 @@ mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);    
 
+const botName = "Zilch Bot"             //change after some time
+
+
 mongoose.connect("mongodb://localhost/Private_chats",(err,db)=>{            //connecting mongodb database
     if(err){
         console.log(err)
@@ -94,6 +97,7 @@ mongoose.connect("mongodb://localhost/Private_chats",(err,db)=>{            //co
 
             socket.on('join-chat',({username ,room})=>{
 
+                console.log(username + "***" + room)
                 const user = userJoin(socket.id , username , room)
 
                 socket.join(user.room)
@@ -172,12 +176,12 @@ app.get('/my_friend',(req,res)=>{
 })
 
 app.post('/chats',(req,res)=>{
-    res.render('chat',{username : "AAA",room :"javascript"})            //right now hardcoded but will change in future
+    res.render('chat',{username : req.body.username,room :req.body.room})            //right now hardcoded but will change in future
 })
 
 //Server configuration 
 PORT = process.env.PORT || 3000
 
-app.listen(PORT,()=>{
+server.listen(PORT,()=>{
     console.log(`Server started on ${PORT}`)
 })
