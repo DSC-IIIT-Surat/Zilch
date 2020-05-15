@@ -65,7 +65,7 @@ app.get('/my_friend',(req,res)=>{
     res.render('list_friends',{friends:req.user.friends})
 })
 
-app.get('/chats',(req,res)=>{
+app.post('/chats',(req,res)=>{
     res.render('chat',{username : "AAA",room :"javascript"})            //right now hardcoded but will change in future
 })
 

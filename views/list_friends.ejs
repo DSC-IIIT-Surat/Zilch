@@ -31,7 +31,13 @@
                 </form>
                 <ul class="list-group">
                     <% friends.forEach(friend=> { %>
-                    <li class="list-group-item"><%- friend.username %> </li>
+                    <li class="list-group-item">
+                        <form method="POST" action="/chats">
+                            <input type="hidden" name="username" value="<%- friend.username %>">
+                            <input type="hidden" name="room" value="<%- friend.room %>">
+                            <button type="submit"><%- friend.username %></button>
+                        </form>
+                    </li>
                     <% }) %>
                 </ul>
             </div>
