@@ -14,7 +14,7 @@ router.get("/addFriend", (req, res) => {
 		userArray.push(req.user.username);
 		console.log(userArray);
 
-		User.find({ username: { $nin: userArray } }, (err, data) => {
+		User.find({ username: { $nin: userArray } }).limit(10).exec((err, data) => {
 			if (err) {
 				console.log(err);
 			} else {
@@ -85,12 +85,8 @@ router.post("/make_friend", (req, res) => {
 
 
 router.get("/search", (req, res) => {
-	console.log("------------------")
-	console.log(req.query)
 	var regex = new RegExp(req.query.word, 'i')
-	User.find({ username: regex }, (err, data) => {
-		console.log("***********************************************")
-		console.log(data)
+	User.find({ username: regex }).limit(15).exec((err, data) => {
 		res.jsonp(data)
 	})
 })

@@ -48,27 +48,25 @@
 						</ul>
 					</div>
 					<div class="col-md-9">
-						<form>
-							<div class="input-group">
-								<input
-									type="text"
-									id="searchName"
-									class="form-control"
-									placeholder="Search"
-								/>
-								<div class="input-group-btn">
-									<button
-										class="btn btn-default"
-										style="border: 1px solid #ced4da;"
-										type="submit"
-									>
-										<i class="fa fa-search"></i>
-									</button>
-								</div>
+						<div class="input-group">
+							<input
+								type="text"
+								id="searchName"
+								class="form-control"
+								placeholder="Search"
+							/>
+							<div class="input-group-btn">
+								<button
+									class="btn btn-default"
+									style="border: 1px solid #ced4da;"
+									type="submit"
+								>
+									<i class="fa fa-search"></i>
+								</button>
 							</div>
-						</form>
+						</div>
 
-						<ul class="list-group">
+						<ul class="list-group" id="list_friends">
 							<% data.forEach(ele => { %>
 							<li class="list-group-item">
 								<%- ele.username %>
@@ -92,25 +90,50 @@
 			</div>
 		</div>
 		<script>
-			$("#searchName").on("keyup", function () {
-				if (this.value.length > 1) {
-          req = {word : this.value};
-          console.log(req+"00000000000000")
+			$("#searchName").on("input", Searching);
 
-					$.ajax({
-						url: "search",
-						dataType: "jsonp",
-						type: "GET",
-						data: req,
-						success: (data) => {
-							console.log(data);
-						},
-						error: (err) => {
-							console.log(err);
-						},
-					});
-				}
-			});
+			function Searching() {
+				console.log("*" + this.value);
+				req = { word: this.value };
+
+				$.ajax({
+					url: "search",
+					dataType: "jsonp",
+					type: "GET",
+					data: req,
+					success: (data) => {
+						console.log(data);
+						if (data) {
+							$("#list_friends").html(" ");
+							data.forEach((ele) => {
+								$("#list_friends")
+									.append(`<li class="list-group-item">
+										${ele.username}
+										<form
+											action="/make_friend"
+											method="POST"
+											class="float-right"
+										>
+											<input
+												type="hidden"
+												value="${ele.username}"
+												name="username"
+											/>
+											<button type="submit">ADD</button>
+										</form>
+									</li>`);
+							});
+						} else {
+							$("#list_friends").html(
+								"<li class='list-group-item'>No User found</li>"
+							);
+						}
+					},
+					error: (err) => {
+						console.log(err);
+					},
+				});
+			}
 		</script>
 	</body>
 </html>
