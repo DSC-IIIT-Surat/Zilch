@@ -83,4 +83,16 @@ router.post("/make_friend", (req, res) => {
 	});
 });
 
+
+router.get("/search", (req, res) => {
+	console.log("------------------")
+	console.log(req.query)
+	var regex = new RegExp(req.query.word, 'i')
+	User.find({ username: regex }, (err, data) => {
+		console.log("***********************************************")
+		console.log(data)
+		res.jsonp(data)
+	})
+})
+
 module.exports = router;
