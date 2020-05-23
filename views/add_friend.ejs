@@ -67,11 +67,8 @@
 						</div>
 
 						<ul class="list-group" id="list_friends">
-							<% data.forEach(ele => { %> 
-								<div>
-									<%- ele.username %> 
-									<%- friends.includes(ele.username) %> 
-								</div>
+							<% data.forEach(ele => { %>
+							
 							<% if(friends.includes(ele.username)) { %>
 							<li class="list-group-item">
 								<%- ele.username %>
@@ -100,11 +97,12 @@
 			</div>
 		</div>
 
-		<!-- debugging -->
-		<div>
 
-			<%- friends -%> 
-		</div>
+		<script>
+			const friends = <%- JSON.stringify(friends) %>;
+		</script>
+
+
 		<script>
 			$("#searchName").on("input", Searching);
 
@@ -118,10 +116,21 @@
 					type: "GET",
 					data: req,
 					success: (data) => {
-						console.log(data);
+						// console.log(data);
 						if (data) {
+							const data1 = data.filter((user) => {
+								console.log(user.username)
+								var a = friends.includes(user.username);
+								if (a) {
+									return 0;
+								} else {
+									return 1;
+								}
+							});
+							// console.log("**********-*---------**-")
+							// console.log(data1);
 							$("#list_friends").html(" ");
-							data.forEach((ele) => {
+							data1.forEach((ele) => {
 								$("#list_friends")
 									.append(`<li class="list-group-item">
 										${ele.username}
