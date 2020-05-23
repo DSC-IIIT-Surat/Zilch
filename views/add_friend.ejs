@@ -67,7 +67,17 @@
 						</div>
 
 						<ul class="list-group" id="list_friends">
-							<% data.forEach(ele => { %>
+							<% data.forEach(ele => { %> 
+								<div>
+									<%- ele.username %> 
+									<%- friends.includes(ele.username) %> 
+								</div>
+							<% if(friends.includes(ele.username)) { %>
+							<li class="list-group-item">
+								<%- ele.username %>
+								<span class="float-right">ADDED</span>
+							</li>
+							<% } else {%>
 							<li class="list-group-item">
 								<%- ele.username %>
 								<form
@@ -83,11 +93,17 @@
 									<button type="submit">ADD</button>
 								</form>
 							</li>
-							<% }) %>
+							<% } %> <% }) %>
 						</ul>
 					</div>
 				</div>
 			</div>
+		</div>
+
+		<!-- debugging -->
+		<div>
+
+			<%- friends -%> 
 		</div>
 		<script>
 			$("#searchName").on("input", Searching);

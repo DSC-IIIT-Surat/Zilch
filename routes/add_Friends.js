@@ -18,7 +18,7 @@ router.get("/addFriend", (req, res) => {
 			if (err) {
 				console.log(err);
 			} else {
-				res.render("add_friend", { data: data });
+				res.render("add_friend", { data: data ,friends :userArray});
 			}
 		});
 	});
