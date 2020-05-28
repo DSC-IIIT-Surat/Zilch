@@ -13,7 +13,8 @@
     />
 
     <link rel="stylesheet" href="css/all.css" />
-    
+    <link rel="stylesheet" href="css/add_friend.css" />
+
     <script
       src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
       integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
@@ -48,7 +49,7 @@
               <div class="input-group-btn">
                 <button
                   class="btn btn-default"
-                  style="border: 1px solid #ced4da;"
+                  style="border: 1px solid #000000;color: white;"
                   type="submit"
                 >
                   <i class="fa fa-search"></i>
@@ -58,7 +59,7 @@
           </form>
           <ul class="list-group">
             <% friends.forEach(friend=> { %>
-            <li class="list-group-item">
+            <li class="list-group-item red_border">
               <form method="POST" action="/chats">
                 <input
                   type="hidden"
@@ -66,7 +67,7 @@
                   value="<%- friend.username %>"
                 />
                 <input type="hidden" name="room" value="<%- friend.room %>" />
-                <button type="submit"><%- friend.username %></button>
+                <button class="btn-dark" type="submit"><%- friend.username %></button>
               </form>
             </li>
             <% }) %>
