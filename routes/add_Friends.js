@@ -78,7 +78,7 @@ router.post("/make_friend", (req, res) => {
 				}
 			);
 
-			res.redirect("/");
+			res.redirect("/addFriend");
 		}
 	});
 });

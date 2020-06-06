@@ -19,7 +19,7 @@ router.post("/signin", (req, res) => {
     }
   });
 
-  res.redirect("/");
+  res.redirect("/login");
 });
 
 router.get("/login", (req, res) => {
