@@ -184,6 +184,12 @@ app.get("/my_friend", (req, res) => {
   res.render("list_friends", { friends: req.user.friends });
 });
 
+
+app.get("/profile", (req, res) => {
+	res.render("profile");
+});
+
+
 app.post("/chats", (req, res) => {
   res.render("chat", { username: req.user.username, room: req.body.room }); //right now hardcoded but will change in future
 });
