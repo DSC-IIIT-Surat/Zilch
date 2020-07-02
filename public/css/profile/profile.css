@@ -1,7 +1,7 @@
 html {
 	margin: 0px;
 	padding: 0px;
-	background-color: red;
+	background-color: rgb(46, 44, 44);
 	width: 100%;
 	overflow: hidden;
 	color: white;
@@ -31,8 +31,10 @@ body {
 	background: linear-gradient(
 		90deg,
 		rgba(2, 0, 36, 1) 0%,
-		rgba(12, 12, 29, 0.6306897759103641) 38%,
-		rgba(0, 212, 255, 1) 100%
+		/* rgba(12, 12, 29, 0.6306897759103641) 25%, */
+		rgb(31, 53, 150) 50%,
+		/* rgba(12, 12, 29, 0.6306897759103641) 75%, */
+		rgb(1, 0, 36) 100%
 	);
 }
 
@@ -112,9 +114,9 @@ menu p {
 	padding: 18px 10px 18px 10px;
 	margin-top: 20px;
 	margin-right: 5px;
-	border: solid #ff2d55 1px;
+	border: solid #0e0088 1px;
 	border-radius: 50px;
-	background-color: #ff2d55;
+	background-color: #0e0088;
 	text-transform: uppercase;
 	letter-spacing: 5px;
 	cursor: pointer;
@@ -148,23 +150,24 @@ menu p {
 }
 
 @media (min-width: 600px) {
-	.container {
+	/* .container {
 		width: 100%;
-		/* border-radius: 2px; */
+		height: 100%;
+		border-radius: 2px;
 
 		margin: 0 auto;
-		/* box-shadow:
+		box-shadow:
   0 2.8px 2.2px rgba(0, 0, 0, 0.02),
   0 6.7px 5.3px rgba(0, 0, 0, 0.028),
   0 12.5px 10px rgba(0, 0, 0, 0.035),
   0 22.3px 17.9px rgba(0, 0, 0, 0.042),
   0 41.8px 33.4px rgba(0, 0, 0, 0.05),
-  0 100px 80px rgba(0, 0, 0, 0.07);*/
-	}
+  0 100px 80px rgba(0, 0, 0, 0.07);
+	} */
 
-	.container-head {
+	/* .container-head {
 		border-radius: 2px;
-	}
+	} */
 
 	.buttons {
 		margin: 0 auto;
