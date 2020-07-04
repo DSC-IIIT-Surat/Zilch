@@ -186,7 +186,7 @@ app.get("/my_friend", (req, res) => {
 
 
 app.get("/profile", (req, res) => {
-	res.render("profile");
+	res.render("profile", { username: req.user.username });
 });
 
 
