@@ -53,3 +53,10 @@ body {
 		float: right;
 	}
 }
+
+/* If the screen size is 600px wide or less, hide the element */
+@media only screen and (max-width: 700px) {
+  .masthead-brand {
+		text-align: center;
+	}
+}

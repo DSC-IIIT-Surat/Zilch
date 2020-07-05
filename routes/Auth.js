@@ -11,7 +11,8 @@ router.get("/signin", (req, res) => {
 router.post("/signin", (req, res) => {
   username = req.body.username;
   password = req.body.password;
-  User.register(new User({ username: username }), password, (err, user) => {
+  email1 = req.body.email;
+  User.register(new User({ username: username,email : email1 }), password, (err, user) => {
     if (err) {
       console.log(err);
     } else {
