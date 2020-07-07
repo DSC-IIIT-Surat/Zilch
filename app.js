@@ -184,11 +184,15 @@ app.get("/my_friend", (req, res) => {
   res.render("list_friends", { friends: req.user.friends });
 });
 
+// profile routes
 
 app.get("/profile", (req, res) => {
 	res.render("profile", { username: req.user.username });
 });
 
+app.get("/add_post", (req, res) => {
+  res.render("upload_post");
+})
 
 app.post("/chats", (req, res) => {
   res.render("chat", { username: req.user.username, room: req.body.room }); //right now hardcoded but will change in future
