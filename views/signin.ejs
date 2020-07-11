@@ -34,6 +34,14 @@
 			integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs="
 			crossorigin="anonymous"
 		></script>
+
+		<style>
+			html,
+			body {
+				height: 100%;
+				background-color: #1a1a1d;
+			}
+		</style>
 	</head>
 	<body>
 		<div style="height: fit-content; overflow: hidden; padding: 20px;">
@@ -47,51 +55,50 @@
 
 		<div class="row" style="margin: 0;">
 			<div class="col-md-3"></div>
-		<div class="col-md-6">
-			<div class="container">
-				<h1 class="text-center">Sign in</h1>
-				<form method="POST">
+			<div class="col-md-6">
+				<div class="container">
+					<h1 class="text-center">Sign in</h1>
+					<form method="POST">
+						<div class="form-group">
+							<label for="E-mail">E-mail</label>
+							<input
+								type="text"
+								class="form-control"
+								id="email"
+								name="email"
+								placeholder="E-mail"
+							/>
+						</div>
 
-					<div class="form-group">
-						<label for="E-mail">E-mail</label>
-						<input
-							type="text"
-							class="form-control"
-							id="email"
-							name="email"
-							placeholder="E-mail"
-						/>
-					</div>
-
-					<div class="form-group">
-						<label for="username">Username</label>
-						<input
-							type="text"
-							class="form-control"
-							id="username"
-							name="username"
-							aria-describedby="emailHelp"
-							placeholder="Username"
-						/>
-					</div>
-					<div class="form-group">
-						<label for="password">Password</label>
-						<input
-							type="password"
-							class="form-control"
-							id="password"
-							name="password"
-							placeholder="Password"
-						/>
-					</div>
-					<div class="text-center">
-						<button type="submit" class="btn btn-primary">
-							Submit
-						</button>
-					</div>
-				</form>
+						<div class="form-group">
+							<label for="username">Username</label>
+							<input
+								type="text"
+								class="form-control"
+								id="username"
+								name="username"
+								aria-describedby="emailHelp"
+								placeholder="Username"
+							/>
+						</div>
+						<div class="form-group">
+							<label for="password">Password</label>
+							<input
+								type="password"
+								class="form-control"
+								id="password"
+								name="password"
+								placeholder="Password"
+							/>
+						</div>
+						<div class="text-center">
+							<button type="submit" class="btn btn-primary">
+								Submit
+							</button>
+						</div>
+					</form>
+				</div>
 			</div>
-		</div>
 		</div>
 	</body>
 </html>

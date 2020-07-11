@@ -195,7 +195,31 @@ app.get("/add_post", (req, res) => {
 })
 
 app.post("/add_post", (req, res) => {
-  res.send(req.body.link);
+  User.findOne({ username: req.user.username }, (err, data) => {
+    if (err) {
+      console.log(err);
+    } else {
+      User.updateOne(
+			{ username: req.user.username },
+			{
+				$push: {
+					post: {
+						link: req.body.link,
+						caption: req.body.caption,
+					},
+				},
+			},
+			(err, r) => {
+				if (err) {
+					console.log(err);
+				} else {
+					console.log(r);
+				}
+			}
+		);
+    }
+   });
+  res.send(req.body.link + req.body.caption);
 });
 
 app.post("/chats", (req, res) => {
