@@ -191,8 +191,12 @@ app.get("/profile", (req, res) => {
 });
 
 app.get("/add_post", (req, res) => {
-  res.render("upload_post");
+  res.render("upload_post", { username: req.user.username });
 })
+
+app.post("/add_post", (req, res) => {
+  res.send(req.body.link);
+});
 
 app.post("/chats", (req, res) => {
   res.render("chat", { username: req.user.username, room: req.body.room }); //right now hardcoded but will change in future
