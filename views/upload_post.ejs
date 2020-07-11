@@ -34,6 +34,23 @@
 			integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs="
 			crossorigin="anonymous"
 		></script>
+
+		<!-- The core Firebase JS SDK is always required and must be listed first -->
+		<script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-app.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-auth.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-database.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-storage.js"></script>
+
+		<!-- TODO: Add SDKs for Firebase products that you want to use https://firebase.google.com/docs/web/setup#available-libraries -->
+		<script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-analytics.js"></script>
+
+		<script src="js/firebase_config.js"></script>
+
+		<style>
+			.post_img {
+				margin: 0px auto;
+			}
+		</style>
 	</head>
 	<body>
 		<div style="height: fit-content; overflow: hidden; padding: 20px;">
@@ -50,8 +67,14 @@
 				<div class="col-md-3"></div>
 				<div class="col-md-6">
 					<div class="col-sm-auto m-auto">
-						<div class="card card-body" style="background-color: rgb(155, 155, 155);">
-							<h1 class="text-center mb-3" style="color: rgb(20, 20, 20);">
+						<div
+							class="card card-body"
+							style="background-color: rgb(155, 155, 155);"
+						>
+							<h1
+								class="text-center mb-3"
+								style="color: rgb(20, 20, 20);"
+							>
 								<i class="fas fa-sign-in-alt"></i>Upload
 							</h1>
 							<form action="/upload" method="POST">
@@ -81,7 +104,35 @@
 						</div>
 					</div>
 				</div>
+				<div class="col-md-3"></div>
+			</div>
+			<div class="row">
+				<div class="col-md-3"></div>
+				<div class="col-md-6" style="margin: 0 auto;">
+					<img
+						id="post_img"
+						class="img-fluid center-block"
+						alt="Responsive image"
+					/>
+				</div>
+				<div class="col-md-3"></div>
 			</div>
 		</div>
+
+		<script>
+			var ImgUrl, ImageName;
+			var files = [];
+			var reader;
+
+			var local = document.getElementById("inputGroupFile02");
+			local.onchange = (e) => {
+				files = e.target.files;
+				reader = new FileReader();
+				reader.onload = () => {
+					document.getElementById("post_img").src = reader.result;
+				};
+				reader.readAsDataURL(files[0]);
+			};
+		</script>
 	</body>
 </html>
