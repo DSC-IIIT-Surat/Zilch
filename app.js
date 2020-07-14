@@ -187,7 +187,17 @@ app.get("/my_friend", (req, res) => {
 // profile routes
 
 app.get("/profile", (req, res) => {
-	res.render("profile", { username: req.user.username });
+
+  // User.findOne({ username: req.user.username }, (err, data) => {
+  //   if (err) {
+  //     console.log(err)
+  //   } else {
+      
+  //   }
+  //  });
+
+
+	res.render("profile", { username: req.user.username , posts : req.user.post});
 });
 
 app.get("/add_post", (req, res) => {
