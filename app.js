@@ -184,21 +184,7 @@ app.get("/my_friend", (req, res) => {
   res.render("list_friends", { friends: req.user.friends });
 });
 
-// profile routes
 
-app.get("/profile", (req, res) => {
-
-  // User.findOne({ username: req.user.username }, (err, data) => {
-  //   if (err) {
-  //     console.log(err)
-  //   } else {
-      
-  //   }
-  //  });
-
-
-	res.render("profile", { username: req.user.username , posts : req.user.post});
-});
 
 app.get("/add_post", (req, res) => {
   res.render("upload_post", { username: req.user.username });
@@ -235,6 +221,33 @@ app.post("/add_post", (req, res) => {
 app.post("/chats", (req, res) => {
   res.render("chat", { username: req.user.username, room: req.body.room }); //right now hardcoded but will change in future
 });
+
+
+
+// profile routes
+
+app.get("/profile/:user", (req, res) => {
+    console.log(req.params.user + "99999999999");
+  User.findOne({ username: req.params.user }, (err, data) => {
+    console.log("========================================================");
+		if (err) {
+      console.log(err);
+      res.render("NotFound")
+    } else {
+        if (data) {
+          res.render("profile", {
+            username: data.username,
+            posts: data.post,
+          });
+        } else {
+          res.render("NotFound");
+        }
+		}
+  });
+});
+
+
+
 
 //Server configuration
 PORT = process.env.PORT || 3000;
