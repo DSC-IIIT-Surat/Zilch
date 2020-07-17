@@ -200,8 +200,13 @@ app.post("/add_post", (req, res) => {
 			{
 				$push: {
 					post: {
-						link: req.body.link,
-						caption: req.body.caption,
+						$each: [
+							{
+								link: req.body.link,
+								caption: req.body.caption,
+							},
+						],
+						$position: 0,
 					},
 				},
 			},
@@ -234,10 +239,12 @@ app.get("/profile/:user", (req, res) => {
       console.log(err);
       res.render("NotFound")
     } else {
-        if (data) {
+      if (data) {
+        var len = data.friends.length;
           res.render("profile", {
             username: data.username,
             posts: data.post,
+            friends : len,
           });
         } else {
           res.render("NotFound");
