@@ -1,0 +1,138 @@
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<!-- cdn for bootstrap -->
+		<link
+			rel="stylesheet"
+			href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+			integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+			crossorigin="anonymous"
+		/>
+
+		<script
+			src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+			integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+			integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+			integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"
+			integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs="
+			crossorigin="anonymous"
+		></script>
+		<link rel="stylesheet" href="css/all.css" />
+		<style>
+			.img-fluid {
+				max-height: 500px;
+				width: 100%;
+			}
+			.card_main {
+				border: 1px solid rgb(56, 56, 56);
+				border-radius: 6px;
+				box-shadow: 0 2px 4px 0 rgb(99, 99, 99),
+					0 2px 4px 0 rgb(97, 97, 97);
+				margin-bottom: 30px;
+				/* padding: 6px; */
+			}
+		</style>
+	</head>
+	<body>
+		<section id="Navbar" class="fixed-top">
+			<div style="height: fit-content; overflow: hidden; padding: 20px;background-color: #1A1A1D;">
+				<h3 class="masthead-brand">Zilch</h3>
+				<nav class="nav nav-masthead justify-content-center">
+					<a class="nav-link active" href="/dashboard">Home</a>
+					<a class="nav-link" href="/add_post">Upload Post</a>
+					<a class="nav-link" href="/profile">Profile</a>
+				</nav>
+			</div>
+		</section>
+		<section id="main" class="container" style="padding-top: 100px;">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-3"></div>
+					<div class="col-md-6">
+						<div class="card_main">
+							<div class="col-md-12" style="padding: 16px;">
+								<img
+									src="https://picsum.photos/1368/750"
+									style="
+										height: 42px;
+										width: 42px;
+										border-radius: 42px;
+									"
+								/>
+								<span>Profile Name</span>
+							</div>
+							<div
+								style="
+									padding: 3px;
+									padding-top: 0px;
+									padding-bottom: 0px;
+								"
+							>
+								<img
+									loading="lazy"
+									src="https://picsum.photos/1368/750"
+									class="img-fluid"
+									alt="Responsive image"
+								/>
+							</div>
+							<div style="padding: 14px;">
+								Caption : Lorem ipsum dolor sit, amet
+								consectetur adipisicing elit. Voluptatem at ex
+								ipsum? Nihil modi quo soluta est rem perferendis
+								dolores?
+							</div>
+						</div>
+						<div class="card_main">
+							<div class="col-md-12" style="padding: 16px;">
+								<img
+									src="https://picsum.photos/1368/750"
+									style="
+										height: 42px;
+										width: 42px;
+										border-radius: 42px;
+									"
+								/>
+								<span>Profile Name</span>
+							</div>
+							<div
+								style="
+									padding: 3px;
+									padding-top: 0px;
+									padding-bottom: 0px;
+								"
+							>
+								<img
+									loading="lazy"
+									src="https://picsum.photos/1368/750"
+									class="img-fluid"
+									alt="Responsive image"
+								/>
+							</div>
+							<div style="padding: 14px;">
+								Caption : Lorem ipsum dolor sit, amet
+								consectetur adipisicing elit. Voluptatem at ex
+								ipsum? Nihil modi quo soluta est rem perferendis
+								dolores?
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3"></div>
+				</div>
+			</div>
+		</section>
+	</body>
+</html>

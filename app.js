@@ -228,6 +228,13 @@ app.post("/chats", (req, res) => {
 });
 
 
+// Dashboard Route
+
+app.get("/dashboard", (req, res) => {
+	res.render("dashboard"); // social medias heart is here
+});
+
+
 
 // profile routes
 
