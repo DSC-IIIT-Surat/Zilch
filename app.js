@@ -19,11 +19,11 @@ const server = http.createServer(app); //server for app
 const io = socketio(server); // server for socket.io
 
 app.use(
-  require("express-session")({
-    secret: "Zilch is new chatting app",
-    resave: false,
-    saveUninitialized: false,
-  })
+	require("express-session")({
+		secret: "Zilch is new chatting app",
+		resave: false,
+		saveUninitialized: false,
+	})
 );
 
 //passport configuration
@@ -43,35 +43,35 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const users = [];
 
 function userJoin(id, username, room) {
-  const user = { id, username, room };
+	const user = { id, username, room };
 
-  users.push(user);
-  return user;
+	users.push(user);
+	return user;
 }
 
 //get current user
 function getUser(id) {
-  return users.find((user) => user.id === id);
+	return users.find((user) => user.id === id);
 }
 
 function userLeave(id) {
-  const index = users.findIndex((user) => user.id === id);
-  if (index !== -1) {
-    return users.splice(index, 1)[0];
-  }
+	const index = users.findIndex((user) => user.id === id);
+	if (index !== -1) {
+		return users.splice(index, 1)[0];
+	}
 }
 
 function getUserRoom(room) {
-  return users.filter((user) => user.room === room);
+	return users.filter((user) => user.room === room);
 }
 
 function formatMessage(username, text, time) {
-  // get username , text and time from user and convert to object
-  return {
-    username,
-    text,
-    time,
-  };
+	// get username , text and time from user and convert to object
+	return {
+		username,
+		text,
+		time,
+	};
 }
 
 //till here//----------------------------------------------------------------------------------//
@@ -83,150 +83,194 @@ mongoose.set("useUnifiedTopology", true);
 
 const botName = "Zilch Bot"; //change after some time
 
+let clients = 0; ///////////////////  for video chat
+const users_video = []; ///////////////////  for video chat
+
 mongoose.connect("mongodb://localhost/Private_chats", (err, db) => {
-  //connecting mongodb database
-  if (err) {
-    console.log(err);
-  } else {
-    console.log("Db connected");
+	//connecting mongodb database
+	if (err) {
+		console.log(err);
+	} else {
+		console.log("Db connected");
 
-    io.on("connection", (socket) => {
-      socket.on("join-chat", ({ username, room }) => {
-        console.log(username + "***" + room);
-        const user = userJoin(socket.id, username, room);
+		io.on("connection", (socket) => {
+			socket.on("join-chat", ({ username, room }) => {
+				console.log(username + "***" + room);
+				const user = userJoin(socket.id, username, room);
 
-        socket.join(user.room);
+				socket.join(user.room);
 
-        let chat = db.collection(room);
+				let chat = db.collection(room);
 
-        chat
-          .find()
-          .limit(100)
-          .sort({ _id: 1 })
-          .toArray((err, res) => {
-            if (err) {
-              console.log(err);
-            }
-            socket.emit("output", res);
-          });
+				chat.find()
+					.limit(100)
+					.sort({ _id: 1 })
+					.toArray((err, res) => {
+						if (err) {
+							console.log(err);
+						}
+						socket.emit("output", res);
+					});
 
-        socket.emit(
-          "message",
-          formatMessage(botName, "Wellcome to Zilch!", " ")
-        );
+				socket.emit(
+					"message",
+					formatMessage(botName, "Wellcome to Zilch!", " ")
+				);
 
-        //when user connects
-        socket.broadcast
-          .to(user.room)
-          .emit(
-            "message",
-            formatMessage(botName, `${user.username} has joined the chat`, " ")
-          );
-        console.log(user.room);
+				//when user connects
+				socket.broadcast
+					.to(user.room)
+					.emit(
+						"message",
+						formatMessage(
+							botName,
+							`${user.username} has joined the chat`,
+							" "
+						)
+					);
+				console.log(user.room);
 
-        //sending chat message
-        socket.on("chatMessage", (data) => {
-          const user = getUser(socket.id);
+				//sending chat message
+				socket.on("chatMessage", (data) => {
+					const user = getUser(socket.id);
 
-          chat.insertOne(
-            { username: user.username, text: data.msg, time: data.time },
-            function () {
-              io.to(user.room).emit(
-                "message",
-                formatMessage(user.username, data.msg, data.time)
-              );
-            }
-          );
-        });
+					chat.insertOne(
+						{
+							username: user.username,
+							text: data.msg,
+							time: data.time,
+						},
+						function () {
+							io.to(user.room).emit(
+								"message",
+								formatMessage(
+									user.username,
+									data.msg,
+									data.time
+								)
+							);
+						}
+					);
+				});
 
-        io.to(user.room).emit("sendUserData", {
-          room: user.room,
-          users: getUserRoom(user.room),
-        });
+				io.to(user.room).emit("sendUserData", {
+					room: user.room,
+					users: getUserRoom(user.room),
+				});
 
-        //when user disconnect
-        socket.on("disconnect", (data) => {
-          const user = userLeave(socket.id);
+				//when user disconnect
+				socket.on("disconnect", (data) => {
+					const user = userLeave(socket.id);
 
-          if (user) {
-            io.to(user.room).emit(
-              "message",
-              formatMessage(botName, `${user.username} left the chat`, " ")
-            );
+					if (user) {
+						io.to(user.room).emit(
+							"message",
+							formatMessage(
+								botName,
+								`${user.username} left the chat`,
+								" "
+							)
+						);
 
-            io.to(user.room).emit("sendUserData", {
-              room: user.room,
-              users: getUserRoom(user.room),
-            });
-          }
-        });
+						io.to(user.room).emit("sendUserData", {
+							room: user.room,
+							users: getUserRoom(user.room),
+						});
+					}
+				});
 
-        socket.on("clear", () => {
-          chat.remove({}, () => {
-            console.log("removed");
-          });
-        });
-      });
-    });
-  }
+				socket.on("clear", () => {
+					chat.remove({}, () => {
+						console.log("removed");
+					});
+				});
+			});
+
+			///////////////////////////////////////////////////////////////////////////////////////////////
+			//////////////////////////       video Chat sockets here      /////////////////////////////////
+			///////////////////////////////////////////////////////////////////////////////////////////////
+			socket.on("join-video-chat", ({ username, room }) => {
+				socket.join(room);
+				const user = userJoin(socket.id, username, room);
+				// socket.emit("output", username + "joined");
+
+				//when user connects
+				socket.broadcast
+					.to(room)
+					.emit("output_video", username + "joined");
+
+				socket.on("NewClient", () => {
+					const user = getUser(socket.id);
+					let clients = Object.keys(getUserRoom(user.room)).length;
+					console.log(clients);
+					Object.keys(getUserRoom("test")).length;
+
+					//if we send room name here
+					if (clients < 3) {
+						this.emit("CreatePeer");
+					} else this.emit("SessionActive");
+				});
+				socket.on("Offer", SendOffer);
+				socket.on("Answer", SendAnswer);
+				socket.on("disconnect", Disconnect);
+			});
+		});
+	}
 });
 
 //Routes
 app.get("/", (req, res) => {
-  res.render("home");
+	res.render("home");
 });
 
 app.use(authRoutes);
 app.use(AddFriendsRoutes);
 
-app.get("/my_friend", (req, res) => {
-  console.log(req.user.friends);
-  res.render("list_friends", { friends: req.user.friends });
+app.get("/chat_friend", (req, res) => {
+	console.log(req.user.friends);
+	res.render("list_friends", { friends: req.user.friends });
 });
 
-
-
 app.get("/add_post", (req, res) => {
-  res.render("upload_post", { username: req.user.username });
-})
+	res.render("upload_post", { username: req.user.username });
+});
 
 app.post("/add_post", (req, res) => {
-  User.findOne({ username: req.user.username }, (err, data) => {
-    if (err) {
-      console.log(err);
-    } else {
-      User.updateOne(
-			{ username: req.user.username },
-			{
-				$push: {
-					post: {
-						$each: [
-							{
-								link: req.body.link,
-								caption: req.body.caption,
-							},
-						],
-						$position: 0,
+	User.findOne({ username: req.user.username }, (err, data) => {
+		if (err) {
+			console.log(err);
+		} else {
+			User.updateOne(
+				{ username: req.user.username },
+				{
+					$push: {
+						post: {
+							$each: [
+								{
+									link: req.body.link,
+									caption: req.body.caption,
+								},
+							],
+							$position: 0,
+						},
 					},
 				},
-			},
-			(err, r) => {
-				if (err) {
-					console.log(err);
-				} else {
-					console.log(r);
+				(err, r) => {
+					if (err) {
+						console.log(err);
+					} else {
+						console.log(r);
+					}
 				}
-			}
-		);
-    }
-   });
-  res.send(req.body.link + req.body.caption);
+			);
+		}
+	});
+	res.send(req.body.link + req.body.caption);
 });
 
 app.post("/chats", (req, res) => {
-  res.render("chat", { username: req.user.username, room: req.body.room }); //right now hardcoded but will change in future
+	res.render("chat", { username: req.user.username, room: req.body.room }); //right now hardcoded but will change in future
 });
-
 
 // Dashboard Route
 
@@ -234,38 +278,33 @@ app.get("/dashboard", (req, res) => {
 	res.render("dashboard"); // social medias heart is here
 });
 
-
-
 // profile routes
 
 app.get("/profile/:user", (req, res) => {
-    console.log(req.params.user + "99999999999");
-  User.findOne({ username: req.params.user }, (err, data) => {
-    console.log("========================================================");
+	console.log(req.params.user + "99999999999");
+	User.findOne({ username: req.params.user }, (err, data) => {
+		console.log("========================================================");
 		if (err) {
-      console.log(err);
-      res.render("NotFound")
-    } else {
-      if (data) {
-        var len = data.friends.length;
-          res.render("profile", {
-            username: data.username,
-            posts: data.post,
-            friends : len,
-          });
-        } else {
-          res.render("NotFound");
-        }
+			console.log(err);
+			res.render("NotFound");
+		} else {
+			if (data) {
+				var len = data.friends.length;
+				res.render("profile", {
+					username: data.username,
+					posts: data.post,
+					friends: len,
+				});
+			} else {
+				res.render("NotFound");
+			}
 		}
-  });
+	});
 });
-
-
-
 
 //Server configuration
 PORT = process.env.PORT || 3000;
 
 server.listen(PORT, () => {
-  console.log(`Server started on ${PORT}`);
+	console.log(`Server started on ${PORT}`);
 });
