@@ -207,8 +207,8 @@ mongoose.connect("mongodb://localhost/Private_chats", (err, db) => {
 
 					//if we send room name here
 					if (clients < 3) {
-						this.emit("CreatePeer");
-					} else this.emit("SessionActive");
+						socket.broadcast.to(room).emit("CreatePeer"); //this we have to look
+					} else socket.broadcast.to(room).emit("SessionActive"); //this we have to look
 				});
 				socket.on("Offer", SendOffer);
 				socket.on("Answer", SendAnswer);
@@ -217,6 +217,27 @@ mongoose.connect("mongodb://localhost/Private_chats", (err, db) => {
 		});
 	}
 });
+
+function Disconnect() {
+	try {
+		userLeave(this.id);
+		this.broadcast.to(room).emit("Disconnect");
+	} catch (err) {
+		console.log(err);
+	}
+}
+
+function SendOffer(offer) {
+	const user = getUser(this.id);
+	room = user.room;
+	this.broadcast.to(room).emit("BackOffer", offer);
+}
+
+function SendAnswer(data) {
+	const user = getUser(this.id);
+	room = user.room;
+	this.broadcast.to(room).emit("BackAnswer", data);
+}
 
 //Routes
 app.get("/", (req, res) => {
@@ -299,6 +320,20 @@ app.get("/profile/:user", (req, res) => {
 				res.render("NotFound");
 			}
 		}
+	});
+});
+
+/////////////////////	video_chat _routes		///////////////////////////////
+
+app.get("/video_home", (req, res) => {
+	res.render("video_chat/home.ejs");
+});
+
+app.post("/video", (req, res) => {
+	console.log(req.body.username);
+	res.render("video_chat/video.ejs", {
+		username: req.body.username,
+		room: req.body.room,
 	});
 });
 

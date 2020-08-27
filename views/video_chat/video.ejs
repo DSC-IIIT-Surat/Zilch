@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Video</title>
+		<!-- Latest compiled and minified CSS -->
+		<link
+			rel="stylesheet"
+			href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+			integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+			crossorigin="anonymous"
+		/>
+
+		<link rel="stylesheet" href="css/video.css" />
+	</head>
+	<body>
+		<h1 class="text-center" id="heading">
+			Video will begin as soon as other person connects
+		</h1>
+
+		<div id="drag" class="dragdiv">
+			<div id="dragheader" class="dragMeDiv"></div>
+			<div class="embed-responsive embed-responsive-16by9">
+				<video class="embed-responsive-item" muted></video>
+			</div>
+		</div>
+
+		<div class="otherVideo">
+			<div
+				id="peerDiv"
+				class="embed-responsive embed-responsive-16by9"
+			></div>
+		</div>
+
+		<script>
+			const username = <%- JSON.stringify(username) %>;
+			const room = <%- JSON.stringify(room) %>;
+		</script>
+
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="/js/video_chat/bundle.js"></script>
+		<script>
+			//Make the DIV element draggagle:
+			dragElement(document.getElementById("drag"));
+
+			function dragElement(elmnt) {
+				var pos1 = 0,
+					pos2 = 0,
+					pos3 = 0,
+					pos4 = 0;
+				if (document.getElementById(elmnt.id + "header")) {
+					/* if present, the header is where you move the DIV from:*/
+					document.getElementById(
+						elmnt.id + "header"
+					).onmousedown = dragMouseDown;
+					document.getElementById(
+						elmnt.id + "header"
+					).ontouchstart = dragMouseDown;
+				} else {
+					/* otherwise, move the DIV from anywhere inside the DIV:*/
+					elmnt.onmousedown = dragMouseDown;
+					elmnt.ontouchstart = dragMouseDown;
+				}
+
+				function dragMouseDown(e) {
+					e = e || window.event;
+					e.preventDefault();
+
+					if (e.type === "touchstart") {
+						pos3 = e.touches[0].clientX;
+						pos4 = e.touches[0].clientY;
+					} else {
+						// get the mouse cursor position at startup:
+						pos3 = e.clientX;
+						pos4 = e.clientY;
+					}
+
+					document.onmouseup = closeDragElement;
+					document.ontouchend = closeDragElement;
+					// call a function whenever the cursor moves:
+					document.onmousemove = elementDrag;
+					document.ontouchmove = elementDrag;
+				}
+
+				function elementDrag(e) {
+					e = e || window.event;
+					e.preventDefault();
+
+					if (e.type === "touchmove") {
+						pos1 = pos3 - e.touches[0].clientX;
+						pos2 = pos4 - e.touches[0].clientY;
+						pos3 = e.touches[0].clientX;
+						pos4 = e.touches[0].clientY;
+					} else {
+						// calculate the new cursor position:
+						pos1 = pos3 - e.clientX;
+						pos2 = pos4 - e.clientY;
+						pos3 = e.clientX;
+						pos4 = e.clientY;
+					}
+
+					// set the element's new position:
+					elmnt.style.top = elmnt.offsetTop - pos2 + "px";
+					elmnt.style.left = elmnt.offsetLeft - pos1 + "px";
+				}
+
+				function closeDragElement() {
+					/* stop moving when mouse button is released:*/
+					document.onmouseup = null;
+					document.onmousemove = null;
+				}
+			}
+		</script>
+		<!-- <script>
+			var dragItem = document.querySelector("#dragheader");
+			var container = document.querySelector("#drag");
+
+			var active = false;
+			var currentX;
+			var currentY;
+			var initialX;
+			var initialY;
+			var xOffset = 0;
+			var yOffset = 0;
+
+			container.addEventListener("touchstart", dragStart, false);
+			container.addEventListener("touchend", dragEnd, false);
+			container.addEventListener("touchmove", drag, false);
+
+			container.addEventListener("mousedown", dragStart, false);
+			container.addEventListener("mouseup", dragEnd, false);
+			container.addEventListener("mousemove", drag, false);
+
+			function dragStart(e) {
+				if (e.type === "touchstart") {
+					initialX = e.touches[0].clientX - xOffset;
+					initialY = e.touches[0].clientY - yOffset;
+				} else {
+					initialX = e.clientX - xOffset;
+					initialY = e.clientY - yOffset;
+				}
+
+				if (e.target === dragItem) {
+					active = true;
+				}
+			}
+
+			function dragEnd(e) {
+				initialX = currentX;
+				initialY = currentY;
+
+				active = false;
+			}
+
+			function drag(e) {
+				if (active) {
+					e.preventDefault();
+
+					if (e.type === "touchmove") {
+						currentX = e.touches[0].clientX - initialX;
+						currentY = e.touches[0].clientY - initialY;
+					} else {
+						currentX = e.clientX - initialX;
+						currentY = e.clientY - initialY;
+					}
+
+					xOffset = currentX;
+					yOffset = currentY;
+
+					setTranslate(currentX, currentY, dragItem);
+				}
+			}
+
+			function setTranslate(xPos, yPos, el) {
+				el.style.transform =
+					"translate3d(" + xPos + "px, " + yPos + "px, 0)";
+			}
+		</script> -->
+	</body>
+</html>
