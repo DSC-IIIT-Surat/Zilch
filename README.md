@@ -34,3 +34,7 @@ Now we have configured all things.
 ```bash
 npm start
 ```
+
+## Maintainers
+This project is mantained by:
+* [Dhairya Patel](https://github.com/AAA530)
