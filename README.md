@@ -15,3 +15,22 @@ To install Node on your local machines use the below link.
 2. Install MongoDB: 
    To install mongodb use the below link:
    [Link to youtube video to install mongoDB on windows](https://www.youtube.com/watch?v=FwMwO8pXfq0&t=308s)
+
+## Configuration
+Now clone this project and then run following commands:
+
+Run this command in folder where project is cloned:
+ ```bash
+ npm install
+ ```
+ 
+To start mongo client run following command in new terminal:
+  ```bash
+ mongod
+ ```
+ 
+Now we have configured all things.
+ To start development run:
+```bash
+npm start
+```
